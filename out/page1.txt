@@ -1,0 +1,92 @@
+Please convert this from using the Go Goblin test framework and instead use Ginkgo and Gomega frameworks. I will feed these to you in chunks and say "Done" when I am done. Here is the first chunk:
+```
+package stopwatch
+
+import (
+	"fmt"
+	"testing"
+	"time"
+
+	. "github.com/franela/goblin"
+)
+
+func TestStopwatchNew(t *testing.T) {
+
+	g := Goblin(t)
+
+	g.Describe("stopwatch.NewStopwatch()", func() {
+
+		g.It("Should create new stopwatch", func(done Done) {
+			sw := NewStopwatch()
+
+			g.Assert(sw != nil).Equal(true)
+			g.Assert(time.Duration(0)).Equal(sw.duration)
+			g.Assert(false).Equal(sw.running)
+			g.Assert(true).Equal(sw.start.IsZero())
+
+			done()
+		})
+	})
+}
+
+var verifyDurationTests = []struct {
+	it       string
+	increase time.Duration
+	expected time.Duration
+	stop     bool
+	reset    bool
+}{
+	{
+		it:       "Should increase by 1 minute",
+		increase: 1 * time.Minute,
+		expected: (1 * time.Minute) * time.Nanosecond,
+		stop:     false,
+		reset:    false,
+	},
+	{
+		it:       "Should increase by 1 minute",
+		increase: 1 * time.Minute,
+		expected: (2 * time.Minute) * time.Nanosecond,
+		stop:     false,
+		reset:    false,
+	},
+	{
+		it:       "Should pause",
+		increase: 1 * time.Minute,
+		expected: (2 * time.Minute) * time.Nanosecond,
+		stop:     true,
+		reset:    false,
+	},
+	{
+		it:       "Should increase by 1 minute",
+		increase: 1 * time.Minute,
+		expected: (3 * time.Minute) * time.Nanosecond,
+		stop:     false,
+		reset:    false,
+	},
+	{
+		it:       "Should increase by 1 minute",
+		increase: 1 * time.Minute,
+		expected: (4 * time.Minute) * time.Nanosecond,
+		stop:     false,
+		reset:    false,
+	},
+	{
+		it:       "Should reset to zero",
+		increase: 0 * time.Minute,
+		expected: (0 * time.Minute) * time.Nanosecond,
+		stop:     false,
+		reset:    true,
+	},
+	{
+		it:       "Should increase by 1 minute",
+		increase: 1 * time.Minute,
+		expected: (1 * time.Minute) * time.Nanosecond,
+		stop:     false,
+		reset:    false,
+	},
+}
+
+func TestStopwatch(t *testing.T) {
+	g := Goblin(t)
+```
